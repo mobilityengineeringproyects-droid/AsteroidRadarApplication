@@ -3,7 +3,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
-apply plugin: 'kotlin-android-extensions'
+//features like Kotlin synthetics for view binding
+// and @Parcelize, is no longer supported and has been
+// removed in recent versions of the Kotlin Gradle plugin.
+//apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 30
@@ -23,14 +26,15 @@ android {
         }
     }
     buildFeatures {
+        viewBinding true
         dataBinding true
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_21
+        targetCompatibility JavaVersion.VERSION_21
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
+        jvmTarget = JavaVersion.VERSION_21.toString()
     }
 }
 
