@@ -36,7 +36,7 @@ class AsteroidRadarApplication: Application() {
                 RefreshAsteroidsWorker::class.java,15L, TimeUnit.MINUTES).setConstraints(constraints)
                 .build()
 
-        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+        WorkManager.getInstance().enqueueUniquePeriodicWork(
             RefreshAsteroidsWorker.WORK_NAME,
             ExistingPeriodicWorkPolicy.KEEP,
             repeatingRequest)
