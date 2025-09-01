@@ -102,52 +102,62 @@ class AsteroidFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        val menuHost: MenuHost = requireActivity()
+        var menuHost: MenuHost? = null
 
-        menuHost.addMenuProvider(object : MenuProvider {
+        val activity = requireActivity()
+        if (activity is MenuHost) {
+            menuHost = activity
 
-            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menuHost.addMenuProvider(object : MenuProvider {
 
-                menuInflater.inflate(R.menu.main_overflow_menu, menu)
-            }
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
 
-            @RequiresApi(Build.VERSION_CODES.N)
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-
-                val format = "yyyy-MM-dd"
-                val today = Date()
-                return when (menuItem.itemId) {
-                    R.id.show_all_menu -> {
-
-
-                        viewModel.getAsteroidsFromPeriod(
-                            getFormattedWeekBackFromDate(format, today),
-                            getFormattedDate(format, today)
-                        )
-                        viewModel.databaseFiltered = true
-                        true
-                    }
-                    R.id.show_rent_menu -> {
-                        val todayFormatted = getFormattedDate(format, today)
-                        viewModel.getAsteroidsFromPeriod(todayFormatted, todayFormatted)
-                        viewModel.databaseFiltered = true
-                        true
-                    }
-                    R.id.show_buy_menu -> {
-                        viewModel.getAsteroids()
-                        viewModel.databaseFiltered = true
-                        true
-                    }
-                    R.id.clear_database_menu -> {
-                        viewModel.clear()
-                        true
-                    }
-                    else -> false
+                    menuInflater.inflate(R.menu.main_overflow_menu, menu)
                 }
-            }
-        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+                @RequiresApi(Build.VERSION_CODES.N)
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+
+                    val format = "yyyy-MM-dd"
+                    val today = Date()
+                    return when (menuItem.itemId) {
+                        R.id.show_all_menu -> {
+
+
+                            viewModel.getAsteroidsFromPeriod(
+                                getFormattedWeekBackFromDate(format, today),
+                                getFormattedDate(format, today)
+                            )
+                            viewModel.databaseFiltered = true
+                            true
+                        }
+
+                        R.id.show_rent_menu -> {
+                            val todayFormatted = getFormattedDate(format, today)
+                            viewModel.getAsteroidsFromPeriod(todayFormatted, todayFormatted)
+                            viewModel.databaseFiltered = true
+                            true
+                        }
+
+                        R.id.show_buy_menu -> {
+                            viewModel.getAsteroids()
+                            viewModel.databaseFiltered = true
+                            true
+                        }
+
+                        R.id.clear_database_menu -> {
+                            viewModel.clear()
+                            true
+                        }
+
+                        else -> false
+                    }
+                }
+            }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+        }
     }
 }
+
 
 
 /* Deprecated as of Fragment, Version 1.5.0-alpha05
