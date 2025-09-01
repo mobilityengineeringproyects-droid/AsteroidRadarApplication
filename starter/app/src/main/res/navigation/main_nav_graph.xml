@@ -2,13 +2,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/asteroidFragment">
 
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.udacity.asteroidradar.main.MainFragment"
-        android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
+        android:id="@+id/asteroidFragment"
+        android:name="com.udacity.asteroidradar.main.AsteroidFragment"
+        android:label="fragment_asteroid"
+        tools:layout="@layout/fragment_asteroid" >
         <action
             android:id="@+id/action_showDetail"
             app:destination="@id/detailFragment" />
