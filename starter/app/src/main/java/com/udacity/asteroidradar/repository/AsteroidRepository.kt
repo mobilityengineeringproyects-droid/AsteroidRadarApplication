@@ -6,7 +6,8 @@ import android.util.Log.DEBUG
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+//REVERT
+//import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
@@ -34,13 +35,17 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
     //It takes the advantage of allowing an initial filtering shall no network is available when database is updated the DatabaseAsteroid list it points to will
     //update as well
     val today = getFormattedDate("yyyy-MM-dd", Date())
-    var asteroids: LiveData<List<Asteroid>> =
-        Transformations.map(database.asteroidDao.getAsteroidsFromDateLive(today, today)) {
-            //Transformations.map(database.asteroidDao.getAsteroids()) {
-            it?.let {
-                it.asDomainModel()
-            }
-        }
+
+//     REVERT
+//    var asteroids: LiveData<List<Asteroid>> =
+//        Transformations.map(database.asteroidDao.getAsteroidsFromDateLive(today, today)) {
+//            //Transformations.map(database.asteroidDao.getAsteroids()) {
+//            it?.let {
+//                it.asDomainModel()
+//            }
+//        }
+
+    
     var testAsteroids = MutableLiveData<List<Asteroid>>()
     // Applies the given function on the main thread to each value emitted by source LiveData and
     // returns LiveData, which emits resulting values.

@@ -82,14 +82,21 @@ class AsteroidFragment : Fragment() {
 
 //  You can use transformation methods to carry information across the observer's lifecycle. The transformations
 //  aren't calculated unless an observer is observing the returned LiveData object.
-        viewModel.transformedDatabaseAsteroids.observe(viewLifecycleOwner, Observer {
-            if (!viewModel.databaseFiltered) {
-                adapter.submitList(it)
-            }
+
+//        REVERT
+//        viewModel.transformedDatabaseAsteroids.observe(viewLifecycleOwner, Observer {
+//            if (!viewModel.databaseFiltered) {
+//                adapter.submitList(it)
+//            }
+//        })
+
+
+
+
             //  viewModel.detailViewEntered = false
             // }else{
             //     adapter.submitList(viewModel.databaseAsteroids.value?.asDomainModel())
-        })
+
 
 
         // setHasOptionsMenu(true) Deprecated as of Fragment, Version 1.5.0-alpha05

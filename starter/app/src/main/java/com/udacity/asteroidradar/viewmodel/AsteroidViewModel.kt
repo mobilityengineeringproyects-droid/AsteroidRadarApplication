@@ -103,13 +103,14 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
 
 
     //Test property to validate use of repository currently cannot be initialized when used with no server calls
-    val transformedDatabaseAsteroids = asteroidRepository.asteroids
-    /*LiveData<List<Asteroid>> =
-Transformations.map(database.asteroidDao.getAsteroids()) {
-    it.asDomainModel()
-}
+    // Commented taking into account above comment and unresolved reference for Transformations
+    // REVERT:
+//     val transformedDatabaseAsteroids = asteroidRepository.asteroids
+//    LiveData<List<Asteroid>> =
+//Transformations.map(database.asteroidDao.getAsteroids()) {
+//    it.asDomainModel()
+//}
 
-     */
 
     var databaseFiltered = false
 
