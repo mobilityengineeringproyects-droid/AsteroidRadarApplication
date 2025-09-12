@@ -2,30 +2,63 @@
 
 buildscript {
     ext.kotlin_version = '2.0.0'
+    ext.gradle_version = '1.9.23'
     repositories {
         google()
         jcenter()
-        
+
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.0.1'
+        //KSP against KAPT
+        //classpath 'com.google.devtools.ksp:2.0.0-1.0.1'
+        classpath 'com.android.tools.build:gradle:8.3.2'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         //classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0"
         //REPLACED as newer versions than AGP 4.0.1 require the updated androidx version for compatibility.
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.9.4"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
 }
 
+
 allprojects {
     repositories {
         google()
         jcenter()
-        
+
     }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
+//plugins {
+//    // Android Gradle Plugin (AGP)
+//    // The version '8.3.2' comes from your classpath 'com.android.tools.build:gradle:8.3.2'
+//    // 'apply false' means it's declared here but applied in module-level build.gradle files
+//    id 'com.android.application' version '8.3.2' apply false
+//    id 'com.android.library' version '8.3.2' apply false // If you have library modules
+//
+//    // Kotlin Android Plugin
+//    // The version comes from your $kotlin_version variable
+//    id 'org.jetbrains.kotlin.android' version "$kotlin_version" apply false
+//
+//    // KSP (Kotlin Symbol Processing) Plugin
+//    // IMPORTANT: The KSP version '2.0.0-1.0.1' is for a pre-release/early version of Kotlin 2.0.
+//    // If your $kotlin_version is '2.0.0' (final), the KSP version should be '2.0.0-1.0.19' or newer.
+//    // Please verify the correct KSP version for your specific $kotlin_version.
+//    // Assuming $kotlin_version = '2.0.0', then KSP should be '2.0.0-1.0.19'
+//    // Let's use a placeholder and a comment to highlight this.
+//    id 'com.google.devtools.ksp' version '2.0.0-1.0.19' apply false // ADJUST KSP VERSION TO MATCH YOUR KOTLIN VERSION (e.g., if $kotlin_version is 2.0.0, use 2.0.0-1.0.19)
+//
+//    // Navigation Safe Args Gradle Plugin
+//    // The version '2.7.7' comes from your classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7"
+//    // For Safe Args, the plugin ID depends on whether you're generating Kotlin or Java code.
+//    // Assuming Kotlin:
+//    id 'androidx.navigation.safeargs.kotlin' version '2.7.7' apply false
+//    // If you were generating Java code for Safe Args (less common now):
+//    // id 'androidx.navigation.safeargs' version '2.7.7' apply false
+//}
