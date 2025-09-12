@@ -4,18 +4,20 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'androidx.navigation.safeargs'
 apply plugin: 'kotlin-parcelize'
+//apply plugin: 'com.google.devtools.ksp'
 //features like Kotlin synthetics for view binding
 // and @Parcelize, is no longer supported and has been
 // removed in recent versions of the Kotlin Gradle plugin.
 //apply plugin: 'kotlin-android-extensions'
 
 android {
+    namespace "com.udacity.asteroidradar"
     compileSdkVersion 34
     buildToolsVersion "29.0.3"
     defaultConfig {
         applicationId "com.udacity.asteroidradar"
         minSdkVersion 24
-        targetSdkVersion 30
+        targetSdkVersion 33
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -38,7 +40,9 @@ android {
         jvmTarget = JavaVersion.VERSION_21.toString()
     }
 }
-
+def lifecycle_version = "2.7.0"
+def nav_version = "2.7.7"
+def work_version = "2.9.0"
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
@@ -47,12 +51,14 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-rc1'
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-core:$lifecycle_version"
     implementation 'androidx.fragment:fragment-ktx:1.2.5'
 
-    implementation "android.arch.navigation:navigation-fragment-ktx:1.0.0"
-    implementation "android.arch.navigation:navigation-ui-ktx:1.0.0"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     implementation "com.squareup.moshi:moshi:1.8.0"
     implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
@@ -69,12 +75,12 @@ dependencies {
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
-    implementation("androidx.room:room-ktx:2.3.0-alpha01")
+    implementation("androidx.room:room-ktx:2.7.2")
     kapt "org.xerial:sqlite-jdbc:3.43.0.0"
-    implementation "androidx.room:room-runtime:2.3.0-alpha01"
-    kapt "androidx.room:room-compiler:2.3.0-alpha01"
+    implementation "androidx.room:room-runtime:2.7.2"
+    kapt "androidx.room:room-compiler:2.7.2"
 
-    implementation "android.arch.work:work-runtime-ktx:1.0.1"
+    implementation "androidx.work:work-runtime-ktx:$work_version"
     implementation 'com.jakewharton.timber:timber:5.0.1'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
