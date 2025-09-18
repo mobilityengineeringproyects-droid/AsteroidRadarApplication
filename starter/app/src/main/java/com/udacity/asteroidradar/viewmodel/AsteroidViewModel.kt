@@ -79,7 +79,7 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
         "https://api.nasa.gov/planetary/apod?api_key=W7dsDgE9T2VAzCqHMhf2pzcbba6wkbsqffOptjgj"
     private val database = AsteroidDatabase.getDatabase(application)
     private val asteroidRepository = AsteroidRepository(database)
-
+    //TODO:Remove unnecessary comment
     //Indicates the state of the invoke for each of the different network calls
     private val _progress = MutableLiveData<Progress>()
     val progress: LiveData<Progress>
