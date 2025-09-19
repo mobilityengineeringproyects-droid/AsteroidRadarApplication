@@ -6,7 +6,8 @@ import android.util.Log.DEBUG
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-//REVERT
+import androidx.lifecycle.map
+// REVERT
 //import androidx.lifecycle.Transformations
 import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
@@ -37,13 +38,13 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
     val today = getFormattedDate("yyyy-MM-dd", Date())
 
 //     REVERT
-//    var asteroids: LiveData<List<Asteroid>> =
-//        Transformations.map(database.asteroidDao.getAsteroidsFromDateLive(today, today)) {
+    var asteroids =
+       database.asteroidDao.getAsteroidsFromDateLive(today, today).map {
 //            //Transformations.map(database.asteroidDao.getAsteroids()) {
-//            it?.let {
-//                it.asDomainModel()
-//            }
-//        }
+            databaseAsteroidList ->
+           databaseAsteroidList.asDomainModel()
+           }
+
 
     
     var testAsteroids = MutableLiveData<List<Asteroid>>()
@@ -60,7 +61,6 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
      *
      * To actually load the videos for use, observe [videos]
      */
-    @RequiresApi(Build.VERSION_CODES.N)
     suspend fun refreshAsteroids() {
         var jsonObject: JSONObject
         var playlist: List<Asteroid>?
