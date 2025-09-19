@@ -21,6 +21,8 @@ class AsteroidAdapter(val clickListener: AsteroidClickListener) :
         fun bind(clickListener: AsteroidClickListener, asteroid: Asteroid) {
             binding.asteroidListener = clickListener
             binding.asteroid = asteroid
+//            if(asteroid.isPotentiallyHazardous)
+//            binding.hazardousImage.setImageResource(R.drawable.ic_status_potentially_hazardous)
             binding.executePendingBindings()
         }
 
