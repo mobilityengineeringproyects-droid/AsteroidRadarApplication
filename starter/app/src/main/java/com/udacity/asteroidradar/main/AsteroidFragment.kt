@@ -76,7 +76,7 @@ class AsteroidFragment : Fragment() {
 
 
         viewModel.asteroids.observe(viewLifecycleOwner, Observer {
-            //list -> adapter.submitList(list)
+            list -> adapter.submitList(list)
         })
 
 
