@@ -1,11 +1,11 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+
 buildscript {
     ext.kotlin_version = '2.0.0'
-    ext.gradle_version = '1.9.23'
     repositories {
         google()
-        jcenter()
+        mavenCentral()
 
     }
 
@@ -13,10 +13,11 @@ buildscript {
         //KSP against KAPT
         //classpath 'com.google.devtools.ksp:2.0.0-1.0.1'
         classpath 'com.android.tools.build:gradle:8.3.2'
+        classpath("org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:2.0.0")
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         //classpath "android.arch.navigation:navigation-safe-args-gradle-plugin:1.0.0"
         //REPLACED as newer versions than AGP 4.0.1 require the updated androidx version for compatibility.
-        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.9.4"
+        classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7"
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -34,6 +35,7 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
 
 //plugins {
 //    // Android Gradle Plugin (AGP)
