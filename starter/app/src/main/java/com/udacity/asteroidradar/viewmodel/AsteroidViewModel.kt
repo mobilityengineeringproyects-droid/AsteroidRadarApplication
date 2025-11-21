@@ -46,6 +46,7 @@ import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.api.parseAsteroidsJsonResult
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.DatabaseAsteroid
+import com.udacity.asteroidradar.database.asDomainModel
 import com.udacity.asteroidradar.network.AsteroidMedia
 import com.udacity.asteroidradar.network.Network
 import com.udacity.asteroidradar.network.asDatabaseModel
@@ -105,11 +106,12 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
     //Test property to validate use of repository currently cannot be initialized when used with no server calls
     // Commented taking into account above comment and unresolved reference for Transformations
     // REVERT:
-//     val transformedDatabaseAsteroids = asteroidRepository.asteroids
-//    LiveData<List<Asteroid>> =
-//Transformations.map(database.asteroidDao.getAsteroids()) {
-//    it.asDomainModel()
+     //val transformedDatabaseAsteroids = asteroidRepository.asteroids
+//    val transformedDatabaseAsteroids =
+//    database.asteroidDao.getAsteroids().asDomainModel()
+
 //}
+
 
 
     var databaseFiltered = false

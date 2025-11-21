@@ -17,7 +17,7 @@ android {
     defaultConfig {
         applicationId "com.udacity.asteroidradar"
         minSdkVersion 24
-        targetSdkVersion 33
+        targetSdkVersion 34
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -31,6 +31,7 @@ android {
     buildFeatures {
         viewBinding true
         dataBinding true
+        compose true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_21
@@ -38,6 +39,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_21.toString()
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion '1.5.1'
     }
 }
 def lifecycle_version = "2.7.0"
@@ -85,4 +89,16 @@ dependencies {
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    // Jetpack Compose dependencies
+    def compose_bom_version = "2024.02.02"
+    implementation platform("androidx.compose:compose-bom:$compose_bom_version")
+    implementation "androidx.compose.ui:ui"
+    implementation "androidx.compose.ui:ui-graphics"
+    implementation "androidx.compose.ui:ui-tooling-preview"
+    implementation "androidx.compose.material3:material3"
+    implementation "androidx.activity:activity-compose:1.8.2"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0"
+    implementation "androidx.compose.runtime:runtime-livedata"
+    debugImplementation "androidx.compose.ui:ui-tooling"
 }

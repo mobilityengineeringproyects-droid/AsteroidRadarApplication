@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -13,7 +14,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.Picasso
 import com.udacity.asteroidradar.R
-import com.udacity.asteroidradar.database.asDomainModel
 import com.udacity.asteroidradar.databinding.FragmentAsteroidBinding
 import com.udacity.asteroidradar.util.Utils.getFormattedDate
 import com.udacity.asteroidradar.util.Utils.getFormattedWeekBackFromDate
@@ -38,12 +38,7 @@ class AsteroidFragment : Fragment() {
                 AsteroidViewModel::class.java
             )
         binding.viewModel = viewModel
-        val adapter = AsteroidAdapter(
-            AsteroidClickListener {
-                viewModel.displayAsteroidDetails(it)
 
-            }
-        )
         viewModel.navigateToSelectedAsteroid.observe(viewLifecycleOwner, Observer {
 
             if (null != it) {
@@ -55,9 +50,6 @@ class AsteroidFragment : Fragment() {
             }
 
         })
-        viewModel.databaseAsteroids.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(it.asDomainModel())
-        })
 
         viewModel.asteroidMedia.observe(viewLifecycleOwner, Observer {
             if (it.mediaType.equals("image")) {
@@ -65,44 +57,13 @@ class AsteroidFragment : Fragment() {
             }
         })
 
-        //reference to the navGraphController
-        //set the arguments from the selected item on the list, such functionallity implies to actually make use of the previously known
-        //logic which makes use of the actually received as part of the asteroid that is binded only the functionllity applies explicitelly
-        //such is part of the class, therefore it can be accesible externally as it is assumed part of the internals by the class
+        binding.composeView.setContent {
+            val asteroids = viewModel.asteroids.observeAsState(initial = emptyList())
+            AsteroidListScreen(asteroids = asteroids.value) {
+                viewModel.displayAsteroidDetails(it)
+            }
+        }
 
-        // The actual argument is known forehand it is now simply a matter of passing it and let the magic glow
-        // The arguments will get passed making use of the same logic as the MarsRealEstate application, what else is there different
-        // from it to shake it, get ready for some shaking ass learning
-
-
-        viewModel.asteroids.observe(viewLifecycleOwner, Observer {
-            list -> adapter.submitList(list)
-        })
-
-
-//  You can use transformation methods to carry information across the observer's lifecycle. The transformations
-//  aren't calculated unless an observer is observing the returned LiveData object.
-
-//        REVERT
-//        viewModel.transformedDatabaseAsteroids.observe(viewLifecycleOwner, Observer {
-//            if (!viewModel.databaseFiltered) {
-//                adapter.submitList(it)
-//            }
-//        })
-
-
-
-
-            //  viewModel.detailViewEntered = false
-            // }else{
-            //     adapter.submitList(viewModel.databaseAsteroids.value?.asDomainModel())
-
-
-
-        // setHasOptionsMenu(true) Deprecated as of Fragment, Version 1.5.0-alpha05
-
-
-        binding.asteroidRecycler.adapter = adapter
         return binding.root
     }
 
@@ -164,18 +125,3 @@ class AsteroidFragment : Fragment() {
         }
     }
 }
-
-
-
-/* Deprecated as of Fragment, Version 1.5.0-alpha05
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.main_overflow_menu, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return true
-    }
-
- */
