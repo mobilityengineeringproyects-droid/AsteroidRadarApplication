@@ -30,7 +30,6 @@ class AsteroidFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-
         val binding = FragmentAsteroidBinding.inflate(inflater)
         binding.lifecycleOwner = this
         viewModel =
