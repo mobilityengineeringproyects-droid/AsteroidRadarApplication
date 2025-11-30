@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Asteroid Radar</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="next_week_asteroids">View week asteroids</string>
+    <string name="week_asteroids">View week asteroids</string>
     <string name="today_asteroids">View today asteroids</string>
     <string name="saved_asteroids">View saved asteroids</string>
     <string name="close_approach_data_title">Close approach date</string>

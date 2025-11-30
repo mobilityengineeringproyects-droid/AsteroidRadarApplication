@@ -88,7 +88,7 @@ class AsteroidFragment : Fragment() {
                     val format = "yyyy-MM-dd"
                     val today = Date()
                     return when (menuItem.itemId) {
-                        R.id.show_all_menu -> {
+                        R.id.view_week_asteroids -> {
 
 
                             viewModel.getAsteroidsFromPeriod(
@@ -99,14 +99,14 @@ class AsteroidFragment : Fragment() {
                             true
                         }
 
-                        R.id.show_rent_menu -> {
+                        R.id.view_today_asteroids -> {
                             val todayFormatted = getFormattedDate(format, today)
                             viewModel.getAsteroidsFromPeriod(todayFormatted, todayFormatted)
                             viewModel.databaseFiltered = true
                             true
                         }
 
-                        R.id.show_buy_menu -> {
+                        R.id.view_saved_asteroids -> {
                             viewModel.getAsteroids()
                             viewModel.databaseFiltered = true
                             true

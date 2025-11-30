@@ -2,13 +2,13 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/show_all_menu"
-        android:title="@string/next_week_asteroids" />
+        android:id="@+id/view_week_asteroids"
+        android:title="@string/week_asteroids" />
     <item
-        android:id="@+id/show_rent_menu"
+        android:id="@+id/view_today_asteroids"
         android:title="@string/today_asteroids" />
     <item
-        android:id="@+id/show_buy_menu"
+        android:id="@+id/view_saved_asteroids"
         android:title="@string/saved_asteroids" />
     <item
         android:id="@+id/clear_database_menu"

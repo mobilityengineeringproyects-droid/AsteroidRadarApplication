@@ -39,6 +39,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
@@ -80,49 +81,39 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
         "https://api.nasa.gov/planetary/apod?api_key=W7dsDgE9T2VAzCqHMhf2pzcbba6wkbsqffOptjgj"
     private val database = AsteroidDatabase.getDatabase(application)
     private val asteroidRepository = AsteroidRepository(database)
+
     //TODO:Remove unnecessary comment
     //Indicates the state of the invoke for each of the different network calls
     private val _progress = MutableLiveData<Progress>()
     val progress: LiveData<Progress>
         get() = _progress
+
     //Updates its value from call to NASA Api for retrieving Asteroids
     private val _asteroids = MutableLiveData<List<Asteroid>>()
     val asteroids: LiveData<List<Asteroid>>
         get() = _asteroids
+
     //Property to permit navigation to DetailView
     private val _navigateToSelectedAsteroid = MutableLiveData<Asteroid?>()
     val navigateToSelectedAsteroid: MutableLiveData<Asteroid?>
         get() = _navigateToSelectedAsteroid
+
     //Retrieves the results from applying a filter to the Database
     private val _databaseAsteroids = MutableLiveData<List<DatabaseAsteroid>>()
     val databaseAsteroids: LiveData<List<DatabaseAsteroid>>
         get() = _databaseAsteroids
+
     //Retrieves the media object from NASA Api
     private val _asteroidMedia = MutableLiveData<AsteroidMedia>()
     val asteroidMedia: LiveData<AsteroidMedia>
         get() = _asteroidMedia
 
-
-    //Test property to validate use of repository currently cannot be initialized when used with no server calls
-    // Commented taking into account above comment and unresolved reference for Transformations
-    // REVERT:
-     //val transformedDatabaseAsteroids = asteroidRepository.asteroids
-//    val transformedDatabaseAsteroids =
-//    database.asteroidDao.getAsteroids().asDomainModel()
-
-//}
-
-
-
     var databaseFiltered = false
 
 
     init {
-        //if (verifyAvailableNetwork())
         refreshDailyImage()
         refreshAsteroids()
-        //getAsteroidsFromDates("2023-04-11", "2023-04-11")
-        //clear()
     }
 
 
@@ -132,16 +123,20 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 try {
-                    asteroidsPlaceholder = database.asteroidDao.getAsteroidsFromDate(startDate, endDate)
+                    asteroidsPlaceholder =
+                        database.asteroidDao.getAsteroidsFromDate(startDate, endDate)
                     val got = true
                 } catch (e: Exception) {
                     print(e.message)
                 }
             }
+//            Convert from DatabaseAsteroid to Asteroid type used in list of main view
             _databaseAsteroids.value = asteroidsPlaceholder
+            _asteroids.value = asteroidsPlaceholder.asDomainModel()
         }
     }
-    fun getAsteroids(){
+
+    fun getAsteroids() {
         var asteroidsPlaceholder: List<DatabaseAsteroid> = emptyList()
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
@@ -153,13 +148,24 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
                 }
             }
             _databaseAsteroids.value = asteroidsPlaceholder
+            _asteroids.value = asteroidsPlaceholder.asDomainModel()
         }
     }
+
     fun clear() {
+        var asteroidsPlaceholder: List<DatabaseAsteroid> = emptyList()
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 database.asteroidDao.clear()
+                try {
+                    asteroidsPlaceholder = database.asteroidDao.getAsteroids()
+                    val got = true
+                } catch (e: Exception) {
+                    print(e.message)
+                }
             }
+                _asteroids.value = asteroidsPlaceholder.asDomainModel()
+
 
         }
     }
@@ -196,61 +202,13 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
                         )
                     )
                 _progress.value = Progress.FINISH
-
                 var asteroid = Asteroid(1L, "", "2023-04-14", 0.0, 0.0, 0.0, 0.0, false)
 
                 try {
-                    //https://stackoverflow.com/questions/63166046/why-do-i-get-cannot-access-database-on-the-main-thread-since-it-may-potentially
-                    /*
-                    Option A uses viewModelScope.launch. The default dispatcher for viewModelScope is Dispatchers.Main.immediate as per the documentation.
-                    As add isn't a suspending method, it runs on that dispatcher directly - i.e., it runs on the main thread.
-
-                    Option B uses viewModelScope.launch(Dispatchers.IO) which means the code runs on the IO dispatcher.
-                    As this isn't the main thread, it succeeds.
-
-                    Option C makes add a suspending function. As per the Async queries with Kotlin coroutines guide,
-                    this automatically moves the database access off of the main thread for you, no matter what dispatcher you are using.
-                    Option C is always the right technique to use when using Room + Coroutines
-                     */
-
                     viewModelScope.launch(Dispatchers.IO) {
 
-                        /*
-                        database.asteroidDao.insert(listOf(asteroid).asDatabaseModel()[0])
-                        asteroid = Asteroid(2L, "", "2023-04-13", 0.0, 0.0, 0.0, 0.0, false)
-                        database.asteroidDao.insert(listOf(asteroid).asDatabaseModel()[0])
-                        asteroid = Asteroid(3L, "", "2023-04-12", 0.0, 0.0, 0.0, 0.0, false)
-                        database.asteroidDao.insert(listOf(asteroid).asDatabaseModel()[0])
-                        asteroid = Asteroid(4L, "", "2023-04-11", 0.0, 0.0, 0.0, 0.0, false)
-                        database.asteroidDao.insert(listOf(asteroid).asDatabaseModel()[0])
-                        asteroid = Asteroid(5L, "", "2023-04-10", 0.0, 0.0, 0.0, 0.0, false)
-                        database.asteroidDao.insert(listOf(asteroid).asDatabaseModel()[0])
-                        asteroid = Asteroid(6L, "", "2023-04-09", 0.0, 0.0, 0.0, 0.0, false)
-                        database.asteroidDao.insert(listOf(asteroid).asDatabaseModel()[0])
-                        asteroid = Asteroid(7L, "", "2023-04-08", 0.0, 0.0, 0.0, 0.0, false)
-                        database.asteroidDao.insert(listOf(asteroid).asDatabaseModel()[0])
-                        //_databaseAsteroids.value = database.asteroidDao.getAsteroids().
-
-                         */
 
                         database.asteroidDao.insertAll(*(_asteroids.value as ArrayList<Asteroid>).asDatabaseModel())
-
-                        /*val testAsteroids = database.asteroidDao.getAsteroidsMod()
-                        for (entity in testAsteroids){
-                            print(entity.id)
-                        }
-
-                         */
-                        /*
-                        if (database.asteroidDao.getAsteroids().value != null)
-                            for (entity in database.asteroidDao.getAsteroids().value!!) {
-                                Timber.d(entity.codename.toString())
-                                val itArrived = 0
-                            }
-       //                 database.asteroidDao.insertAll(*testAsteroids.toTypedArray())
-
-                         */
-                        //clear()
                     }
                 } catch (e: Exception) {
                     Timber.e(e.message)
@@ -272,7 +230,6 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
     fun displayAsteroidDetailsComplete() {
         _navigateToSelectedAsteroid.value = null
     }
-
 
 
     class Factory(val app: Application) : ViewModelProvider.Factory {
